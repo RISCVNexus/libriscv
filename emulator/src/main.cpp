@@ -303,7 +303,10 @@ static void run_program(
 			debug.simulate();
 		} else {
 			// Normal RISC-V simulation
-			machine.simulate(cli_args.fuel);
+			if (cli_args.accurate)
+				machine.simulate(cli_args.fuel);
+			else
+				machine.cpu.simulate_inaccurate(machine.cpu.pc());
 		}
 	} catch (riscv::MachineException& me) {
 		printf("%s\n", machine.cpu.current_instruction_to_string().c_str());
@@ -342,7 +345,7 @@ static void run_program(
 		const auto retval = machine.return_value();
 		printf(">>> Program exited, exit code = %" PRId64 " (0x%" PRIX64 ")\n",
 			int64_t(retval), uint64_t(retval));
-		if (cli_args.accurate || !riscv::binary_translation_enabled)
+		if (cli_args.accurate)
 		printf("Instructions executed: %" PRIu64 "  Runtime: %.3fms  Insn/s: %.0fmi/s\n",
 			machine.instruction_counter(), runtime.count()*1000.0,
 			machine.instruction_counter() / (runtime.count() * 1e6));

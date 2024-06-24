@@ -12,6 +12,16 @@
 
 #include "cpu_dispatch.cpp"
 
+#undef VIEW_INSTR
+#undef VIEW_INSTR_AS
+#undef NEXT_INSTR
+#undef NEXT_C_INSTR
+#undef NEXT_BLOCK
+#undef NEXT_SEGMENT
+#undef PERFORM_BRANCH
+#undef PERFORM_FORWARD_BRANCH
+#include "cpu_inaccurate_dispatch.cpp"
+
 namespace riscv
 {
 	INSTANTIATE_32_IF_ENABLED(CPU);
